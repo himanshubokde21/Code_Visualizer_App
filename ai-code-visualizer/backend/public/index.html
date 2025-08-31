@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Code Visualizer v2</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>AI Code Visualizer</h1>
+        <button id="theme-toggle-btn">Toggle Theme</button>
+    </header>
+    <main id="container">
+        <div id="left-panel" class="panel">
+            <h2>Architecture</h2>
+            <button id="import-folder-btn">Import Project Folder</button>
+            <input type="file" id="folder-upload-input" webkitdirectory directory multiple style="display: none;" />
+            <p id="arch-summary">Import a project to begin.</p>
+            <div id="arch-diagram-container"></div>
+        </div>
+        <div id="right-wrapper">
+            <div id="code-panel" class="panel">
+                <h2>Select a file to view its code</h2>
+            </div>
+            <div id="analysis-panel" class="panel">
+                <h2>AI Analysis</h2>
+                <p>Select a file to generate an analysis.</p>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

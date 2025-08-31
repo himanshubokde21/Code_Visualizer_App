@@ -1,0 +1,190 @@
+/* --- Base & Theme Styles --- */
+:root {
+    --bg-color: #1e1e1e;
+    --text-color: #d4d4d4;
+    --panel-bg: #252526;
+    --border-color: #444;
+    --gutter-bg: #4a4a4a;
+    --accent-color: #007acc;
+    --hover-bg: #37373d;
+    --line-color: #555;
+}
+
+body.light-theme {
+    --bg-color: #f0f2f5;
+    --text-color: #333333;
+    --panel-bg: #ffffff;
+    --border-color: #ddd;
+    --gutter-bg: #e6e6e6;
+    --accent-color: #007acc;
+    --hover-bg: #f0f0f0;
+    --line-color: #ccc;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* --- Header --- */
+header {
+    padding: 0.5rem 1rem;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+header h1 { margin: 0; font-size: 1.2rem; }
+
+/* --- CORRECTED: Theme Toggle Icon Button --- */
+#theme-toggle-btn {
+    background: none; border: none; cursor: pointer; padding: 5px;
+    border-radius: 50%; display: flex; justify-content: center;
+    align-items: center; width: 32px; height: 32px; transition: background-color 0.2s ease;
+}
+#theme-toggle-btn:hover { background-color: var(--border-color); }
+#theme-toggle-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: var(--text-color);
+    transition: transform 0.3s ease-in-out;
+}
+#theme-toggle-btn:active svg {
+    transform: scale(0.9) rotate(45deg);
+}
+/* Logic to show/hide sun and moon icons */
+#moon-icon { display: none; }
+#sun-icon { display: block; }
+body.light-theme #sun-icon { display: none; }
+body.light-theme #moon-icon { display: block; }
+
+
+/* --- Main Layout --- */
+main#container { display: flex; flex-grow: 1; padding: 1rem; gap: 0.3rem; box-sizing: border-box; }
+#right-wrapper { display: flex; flex-direction: column; gap: 0.3rem; border-radius: 15px; overflow: hidden; }
+
+/* --- Panel Styles --- */
+.panel { background-color: var(--panel-bg); padding: 1rem; box-sizing: border-box; }
+#left-panel.panel {
+    border-radius: 15px;
+    overflow: auto; 
+}
+
+/* --- Resizable Gutter Styles --- */
+.gutter { background-color: transparent; }
+.gutter.gutter-horizontal { cursor: col-resize; }
+.gutter.gutter-vertical { cursor: row-resize; }
+
+/* --- Import Button --- */
+#import-folder-btn {
+  display: flex; justify-content: center; align-items: center; width: 100%;
+  margin-bottom: 1rem; padding: 10px 15px; gap: 10px; background-color: var(--accent-color);
+  outline: 3px var(--text-color) solid; outline-offset: -3px; border-radius: 5px;
+  border: none; cursor: pointer; transition: 400ms;
+}
+
+/* --- Visual File Tree Styles --- */
+#arch-diagram-container {
+    padding: 2rem 0; /* MODIFIED: Removed side padding, added top/bottom */
+    text-align: center;
+}
+
+.root-visual-tree {
+    display: inline-block;
+    padding: 0 2rem; /* MODIFIED: Added side padding here instead */
+}
+
+.children {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding-top: 30px; 
+}
+
+.visual-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.visual-node .icon {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 8px;
+    transition: transform 0.2s ease;
+}
+.visual-node:hover .icon { transform: scale(1.1); }
+.visual-node.selected {
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 5px;
+    margin-top: -7px; 
+    margin-bottom: -7px;
+}
+.visual-node .name { font-size: 14px; white-space: nowrap; }
+
+/* --- Connecting Lines --- */
+.children::before {
+    content: ''; position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%); width: 2px; height: 15px;
+    background-color: var(--line-color);
+}
+.visual-node::before {
+    content: ''; position: absolute; bottom: 100%; left: 50%;
+    transform: translateX(-50%); width: 2px; height: 15px;
+    background-color: var(--line-color);
+}
+.root-visual-tree > .visual-node::before, .root-visual-tree > .visual-node::after {
+    display: none; 
+}
+.children::after {
+    content: ''; position: absolute; top: 15px; left: 50%;
+    transform: translateX(-50%); height: 2px;
+    width: calc(100% - 90px);
+    background-color: var(--line-color);
+}
+.children .visual-node:only-child::before { height: 30px; }
+.children .visual-node:only-child ~ .children::after { display: none; }
+
+
+/* --- Code Panel Styles --- */
+#code-panel h2, #analysis-panel h2 { margin-top: 0; }
+#code-panel pre { background-color: var(--bg-color); border: 1px solid var(--border-color); padding: 1rem; border-radius: 6px; white-space: pre-wrap; word-wrap: break-word; height: calc(100% - 60px); overflow: auto; }
+#code-panel code { font-family: 'Courier New', Courier, monospace; font-size: 0.9em; }
+
+/* --- Misc --- */
+.loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- NEW: Custom Scrollbar for Dark Theme --- */
+/* Works in Webkit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--panel-bg);
+}
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
