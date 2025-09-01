@@ -3,27 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>AI Code Visualizer v2</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
     <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>AI Code Visualizer</h1>
-        <button id="theme-toggle-btn">Toggle Theme</button>
+        <button id="theme-toggle-btn">
+            <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
     </header>
     <main id="container">
         <div id="left-panel" class="panel">
             <h2>Architecture</h2>
-            <button id="import-folder-btn">Import Project Folder</button>
-            <input type="file" id="folder-upload-input" webkitdirectory directory multiple style="display: none;" />
+            <div class="input-div" id="import-folder-btn-wrapper">
+                <input class="input" id="folder-upload-input" type="file" webkitdirectory directory multiple>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" stroke-linejoin="round" stroke-linecap="round" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor" class="icon">
+                    <polyline points="16 16 12 12 8 16"></polyline>
+                    <line y2="21" x2="12" y1="12" x1="12"></line>
+                    <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                    <polyline points="16 16 12 12 8 16"></polyline>
+                </svg>
+            </div>
             <p id="arch-summary">Import a project to begin.</p>
             <div id="arch-diagram-container"></div>
         </div>
         <div id="right-wrapper">
-            <div id="code-panel" class="panel">
-                <h2>Select a file to view its code</h2>
+            <div id="code-and-flowchart-panels">
+                <div id="code-panel" class="panel">
+                    <h2>Select a file to view its code</h2>
+                </div>
+                <div id="flowchart-panel" class="panel">
+                    <h2>Flowchart</h2>
+                    <p>Select a file to generate a flowchart.</p>
+                </div>
             </div>
             <div id="analysis-panel" class="panel">
                 <h2>AI Analysis</h2>
