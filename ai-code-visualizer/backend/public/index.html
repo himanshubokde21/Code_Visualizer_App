@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Code Visualizer v2</title>
+    <title>AI Code Visualizer</title>
     <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     
@@ -15,6 +15,9 @@
 <body>
     <header>
         <h1>AI Code Visualizer</h1>
+        <nav id="quick-nav">
+            <a href="#about-section" class="about-link">About</a>
+        </nav>
         <button id="theme-toggle-btn">
             <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="5"></circle>
@@ -32,6 +35,7 @@
             </svg>
         </button>
     </header>
+
     <main id="container">
         <div id="left-panel" class="panel">
             <h2>Architecture</h2>
@@ -63,6 +67,48 @@
             </div>
         </div>
     </main>
+
+    <section id="about-section" class="panel">
+        <div class="about-inner">
+            <h2>About This App</h2>
+            <p class="about-lead">
+                AI Code Visualizer lets you import a project folder, explore its structure visually,
+                view source files with syntax highlighting, generate a basic flowchart, and see a mock AI analysis.
+            </p>
+
+            <h3>Features</h3>
+            <ul class="about-list">
+                <li>Drag / select a folder to visualize its hierarchy.</li>
+                <li>Syntax‑highlighted code viewer powered by Prism.js.</li>
+                <li>Auto-generated flowchart placeholder using Mermaid.js.</li>
+                <li>Resizable panels for a customizable layout.</li>
+                <li>Light and dark theme support.</li>
+            </ul>
+
+            <h3>Developers</h3>
+            <ul class="dev-list">
+                <li><strong>Himanshu Bokde</strong> —
+                    <a href="https://github.com/himanshubokde21" target="_blank" rel="noopener">GitHub</a> |
+                    <a href="https://www.linkedin.com/in/himanshu-bokde-2a19462b5/" target="_blank" rel="noopener">LinkedIn</a>
+                </li>
+                <li><strong>Divyani More</strong> —
+                    <a href="https://github.com/Diwyanimore" target="_blank" rel="noopener">GitHub</a> |
+                    <a href="https://www.linkedin.com/in/divyani-more-3590282b6/" target="_blank" rel="noopener">LinkedIn</a>
+                </li>
+            </ul>
+
+            <h3>Privacy Note</h3>
+            <p class="about-note">
+                All file processing happens locally in your browser. No code or file information is sent to a server.
+            </p>
+
+            <footer class="about-footer">
+                <span>© 2025 AI Code Visualizer</span>
+                <a href="#" class="back-to-top">Back to top ↑</a>
+            </footer>
+        </div>
+    </section>
+
     <script src="script.js"></script>
 </body>
 </html>

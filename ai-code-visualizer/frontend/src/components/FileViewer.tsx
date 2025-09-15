@@ -1,41 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// ai-code-visualizer/frontend/src/components/FileViewer.tsx
+import React from 'react';
 
-const FileViewer = ({ selectedFile }) => {
-    const [fileContent, setFileContent] = useState('');
-    const [fileBreakdown, setFileBreakdown] = useState('');
+interface FileViewerProps {
+    filePath: string | null;
+    fileContent: string;
+}
 
-    useEffect(() => {
-        if (selectedFile) {
-            fetchFileContent(selectedFile);
-            fetchFileBreakdown(selectedFile);
-        }
-    }, [selectedFile]);
-
-    const fetchFileContent = async (file) => {
-        try {
-            const response = await axios.get(`/api/files/content?file=${file}`);
-            setFileContent(response.data);
-        } catch (error) {
-            console.error('Error fetching file content:', error);
-        }
-    };
-
-    const fetchFileBreakdown = async (file) => {
-        try {
-            const response = await axios.get(`/api/files/breakdown?file=${file}`);
-            setFileBreakdown(response.data);
-        } catch (error) {
-            console.error('Error fetching file breakdown:', error);
-        }
-    };
-
+const FileViewer: React.FC<FileViewerProps> = ({ filePath, fileContent }) => {
     return (
         <div className="file-viewer">
-            <h2>File Viewer</h2>
+            <h2>{filePath ? `Viewing: ${filePath}` : 'No File Selected'}</h2>
             <pre>{fileContent}</pre>
-            <h3>File Breakdown</h3>
-            <div>{fileBreakdown}</div>
         </div>
     );
 };

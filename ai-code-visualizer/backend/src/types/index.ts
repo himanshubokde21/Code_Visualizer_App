@@ -1,4 +1,4 @@
-// FILE: src/types/index.ts
+// FILE: ai-code-visualizer/src/types/index.ts
 
 export interface FileNode {
     name: string;

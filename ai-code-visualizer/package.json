@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "dev:backend": "nodemon --watch backend/src --exec ts-node backend/src/app.ts",
+    "build:backend": "tsc -p backend",
+    "start:backend": "node backend/dist/app.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:frontend": "cd frontend && npm run preview",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "@types/minimatch": "^6.0.0",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/react-dom": "^19.1.9",
+    "react-dom": "^19.1.1"
+  }
+}

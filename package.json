@@ -1,16 +1,33 @@
 {
   "dependencies": {
     "@google/generative-ai": "^0.14.1",
+    "@types/react": "^19.1.13",
+    "axios": "^1.12.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^4.21.2",
-    "multer": "^2.0.2"
+    "kill-port": "^2.0.1",
+    "multer": "^2.0.2",
+    "react": "^19.1.1"
+  },
+  "scripts": {
+    "dev:backend": "nodemon --watch backend/src --exec ts-node backend/src/app.ts",
+    "build:backend": "tsc -p backend",
+    "start:backend": "node backend/dist/app.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "start:frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
   },
   "devDependencies": {
+    "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.23",
+    "@types/minimatch": "^6.0.0",
     "@types/multer": "^2.0.0",
     "@types/node": "^20.19.11",
+    "@vitejs/plugin-react": "^5.0.2",
+    "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"

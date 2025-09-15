@@ -1,3 +1,6 @@
+// ai-code-visualizer/backend/public/script.js
+// Main JavaScript for AI Code Visualizer
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM References ---
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -92,21 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
            nodeElement.dataset.filePath = node.path;
         }
 
-        // NEW: Create the wrapper for the content
         const contentWrapper = document.createElement('div');
         contentWrapper.classList.add('node-content-wrapper');
-
         const iconElement = document.createElement('div');
         iconElement.classList.add('icon');
         iconElement.style.backgroundImage = `url('${getIconURL(node)}')`;
-
         const nameElement = document.createElement('div');
         nameElement.classList.add('name');
         nameElement.textContent = node.name;
 
         contentWrapper.appendChild(iconElement);
         contentWrapper.appendChild(nameElement);
-        nodeElement.appendChild(contentWrapper); // Append the wrapper to the main node
+        nodeElement.appendChild(contentWrapper);
 
         if (node.children.length > 0) {
             const childrenElement = document.createElement('div');
@@ -118,9 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getIconURL(node) {
-        if (node.type === 'folder') {
-            return 'https://img.icons8.com/color/96/000000/folder-invoices.png';
-        }
+        if (node.type === 'folder') return 'https://img.icons8.com/color/96/000000/folder-invoices.png';
         const extension = node.name.split('.').pop();
         switch (extension) {
             case 'html': return 'https://img.icons8.com/color/96/000000/html-5.png';
@@ -130,8 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'py': return 'https://img.icons8.com/color/96/000000/python.png';
             case 'cpp': return 'https://img.icons8.com/color/96/000000/c-plus-plus-logo.png';
             case 'c': return 'https://img.icons8.com/color/96/000000/c-programming.png';
-            case 'png': case 'jpg': case 'jpeg': case 'gif': return 'https://img.icons8.com/color/96/000000/image-file.png';
-            case 'txt': return 'https://img.icons8.com/color/96/000000/txt.png';
             default: return 'https://img.icons8.com/color/96/000000/document.png';
         }
     }
@@ -149,17 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getLanguageClass(filename) {
         const extension = filename.split('.').pop();
-        const langMap = {
-            'js': 'javascript', 'py': 'python', 'java': 'java',
-            'cpp': 'cpp', 'c': 'c', 'html': 'markup', 'css': 'css'
-        };
+        const langMap = { 'js': 'javascript', 'py': 'python', 'java': 'java', 'cpp': 'cpp', 'c': 'c', 'html': 'markup', 'css': 'css' };
         return langMap[extension] || 'plaintext';
     }
-    
-    // NEW: Function to simulate an AI call for code explanation
+
     async function getCodeExplanation(code, language) {
-        // In a real application, this would be an API call to a generative AI model.
-        // For this simulation, we'll return a pre-written explanation.
         return new Promise(resolve => {
             setTimeout(() => {
                 const explanation = `This is a <strong>${language}</strong> code snippet.\n\n` +
@@ -169,10 +159,53 @@ document.addEventListener('DOMContentLoaded', () => {
                                   `**Simulated Analysis:**\n` +
                                   `This is a placeholder explanation. A real AI model would provide a detailed, line-by-line breakdown of the code's purpose, structure, and potential improvements.`;
                 resolve(explanation);
-            }, 1000); // Simulate network delay
+            }, 1000);
         });
     }
 
+    /* --- FIX FOR MERMAID SYNTAX ERROR --- */
+    function sanitizeForMermaid(text) {
+        // Replace characters that can break Mermaid syntax and wrap in quotes
+        const sanitizedText = text.replace(/"/g, '#quot;');
+        return `"${sanitizedText}"`;
+    }
+
+    function generateDetailedFlowchart(code) {
+        let graph = 'graph TD\n    A[Start] --> B(Declare Variables);\n';
+        let nodeCounter = 2;
+        let lastNode = 'B';
+        const lines = code.split('\n').map(line => line.trim());
+
+        for (const line of lines) {
+            const nextNodeChar = String.fromCharCode(65 + nodeCounter);
+
+            if (line.match(/if\s*\(/)) {
+                // Use the sanitizer to prevent errors
+                const condition = sanitizeForMermaid(line.replace('if', '').trim());
+                graph += `    ${lastNode} --> ${nextNodeChar}{Condition: ${condition}};\n`;
+                lastNode = nextNodeChar;
+            } else if (line.match(/for\s*\(/)) {
+                // Use the sanitizer to prevent errors
+                const loop = sanitizeForMermaid(line.replace('for', '').trim());
+                graph += `    ${lastNode} --> ${nextNodeChar}[Loop: ${loop}];\n`;
+                lastNode = nextNodeChar;
+            } else if (line.match(/System\.out\.println/)) {
+                graph += `    ${lastNode} --> ${nextNodeChar}[Output];\n`;
+                lastNode = nextNodeChar;
+            } else if (line.match(/return/)) {
+                graph += `    ${lastNode} --> ${nextNodeChar}[Return];\n`;
+                lastNode = nextNodeChar;
+            }
+
+            nodeCounter++;
+            if (nodeCounter > 25) break; // Safety break for very long files
+        }
+
+        graph += `    ${lastNode} --> Z[End];\n`;
+        return graph;
+    }
+    /* --- END OF FIX --- */
+    
     async function displayFileContent(file) {
         document.querySelectorAll('.visual-node').forEach(el => el.classList.remove('selected'));
         document.querySelector(`[data-file-path="${file.webkitRelativePath}"]`)?.classList.add('selected');
@@ -192,14 +225,18 @@ document.addEventListener('DOMContentLoaded', () => {
         
         Prism.highlightElement(code);
 
-        const mermaidGraph = `graph TD\n    A[Start] --> B{Read ${file.name}};\n    B --> C(Process Content);\n    C --> D[End];`;
-        flowchartPanel.innerHTML = `<h2>Flowchart</h2><div class="mermaid">${mermaidGraph}</div>`;
+        const mermaidGraph = generateDetailedFlowchart(content);
+        flowchartPanel.innerHTML = `<h2>Flowchart</h2><div class="mermaid-container"><div class="mermaid">${mermaidGraph}</div></div>`;
         mermaid.init(undefined, flowchartPanel.querySelectorAll('.mermaid'));
 
-        // UPDATED: Trigger the AI code explanation
         analysisPanel.innerHTML = `<h2>AI Analysis for ${file.name}</h2><div class="loader"></div>`;
         const explanation = await getCodeExplanation(content, languageClass);
-        // Using innerHTML to render the bold tags from the explanation
         analysisPanel.innerHTML = `<h2>AI Analysis for ${file.name}</h2><p>${explanation.replace(/\n/g, '<br>')}</p>`;
     }
+
+    const backToTop = document.querySelector('.back-to-top');
+    backToTop?.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 });

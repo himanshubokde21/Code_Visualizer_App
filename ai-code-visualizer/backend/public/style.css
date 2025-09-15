@@ -1,12 +1,13 @@
+/* ai-code-visualizer/backend/public/style.css */
 /* --- Base & Theme Styles --- */
 :root {
-    --bg-color: #1e1e1e;
+    --bg-color: #1A1A1A;
     --text-color: #d4d4d4;
-    --panel-bg: #252526;
-    --border-color: #444;
+    --panel-bg: #282828;
+    --border-color: #444; /* Added for subtle borders */
     --gutter-bg: #4a4a4a;
-    --accent-color: #007acc;
-    --hover-bg: #3737d;
+    --accent-color: #00aaff; /* Brighter accent */
+    --hover-bg: #37373d;
     --line-color: #555;
     --import-glow-color: rgb(1, 235, 252);
     --import-glow-shadow: 0px 0px 100px var(--import-glow-color), inset 0px 0px 10px var(--import-glow-color), 0px 0px 5px rgb(255, 255, 255);
@@ -16,7 +17,7 @@ body.light-theme {
     --bg-color: #f0f2f5;
     --text-color: #333333;
     --panel-bg: #ffffff;
-    --border-color: #ddd;
+    --border-color: #e0e0e0;
     --gutter-bg: #e6e6e6;
     --accent-color: #007acc;
     --hover-bg: #f0f0f0;
@@ -34,201 +35,311 @@ body {
     margin: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+    overflow-y: auto; /* Allow the whole page to scroll */
 }
 
-/* --- Header --- */
+/* --- HEADER --- */
 header {
-    padding: 0.5rem 1rem;
-    background-color: var(--panel-bg);
-    border-bottom: 1px solid var(--border-color);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-shrink: 0;
+    gap: 1rem;
+    padding: 0 1.25rem;
+    height: 56px;
+    background: var(--panel-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    position: sticky; /* Keep header at the top when scrolling */
+    top: 0;
+    z-index: 10;
 }
+header h1 { margin: 0; font-size: 1.05rem; font-weight: 500; }
 
-header h1 { margin: 0; font-size: 1.2rem; }
+#quick-nav {
+    margin-left: auto;
+}
+#quick-nav .about-link {
+    font-size: .8rem;
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+#quick-nav .about-link:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background-color: var(--hover-bg);
+}
 
 /* --- Theme Toggle Button --- */
 #theme-toggle-btn {
     background: none; border: none; cursor: pointer; padding: 5px;
-    border-radius: 50%; display: flex; justify-content: center;
-    align-items: center; width: 38px; height: 38px; transition: background-color 0.2s ease;
+    border-radius: 50%; display: flex; align-items: center; width: 38px; height: 38px; transition: background-color 0.2s ease;
 }
-#theme-toggle-btn:hover { background-color: var(--border-color); }
-#theme-toggle-btn svg {
-    width: 24px;
-    height: 24px;
-    stroke: var(--text-color);
-    transition: transform 0.3s ease-in-out;
-}
-#theme-toggle-btn:active svg { transform: scale(0.9) rotate(45deg); }
+#theme-toggle-btn:hover { background-color: var(--hover-bg); }
+#theme-toggle-btn svg { width: 24px; height: 24px; stroke: var(--text-color); }
 #moon-icon { display: none; }
 body.light-theme #sun-icon { display: none; }
 body.light-theme #moon-icon { display: block; }
 
-
-/* --- Main Layout --- */
-main#container { display: flex; flex-grow: 1; padding: 0.5rem; gap: 0.5rem; }
+/* --- MAIN LAYOUT FIX --- */
+main#container {
+    display: flex;
+    padding: 1rem;
+    gap: 0.3rem;
+    /* This is the key: Calculate height to fill the screen minus the header */
+    height: calc(100vh - 56px);
+}
 
 #right-wrapper {
-    display: flex;
-    flex-direction: column; 
-    gap: 0.5rem;
-    flex-grow: 1;
-    min-width: 0; 
+    display: flex; flex-direction: column; gap: 0.3rem;
+    flex: 1; min-width: 0;
 }
 #code-and-flowchart-panels {
-    display: flex;
-    gap: 0.5rem;
-    flex-grow: 1;
-    min-height: 0; 
+    display: flex; gap: 0.3rem;
+    flex: 1; min-height: 0;
 }
-#analysis-panel {
-    flex-shrink: 0; 
-}
+#analysis-panel { flex-shrink: 0; }
 
-/* --- Panel Styles --- */
-.panel { background-color: var(--panel-bg); padding: 1rem; border-radius: 15px; }
-
-/* CORRECTED: The left panel is a flex container BUT does not scroll itself. */
-#left-panel {
+/* --- UNIFIED PANEL STYLES --- */
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Hide overflow here */
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.panel h2 {
+    margin: 0 0 1rem; font-size: .9rem; font-weight: 600;
+    letter-spacing: .5px; color: var(--text-color); opacity: 0.8;
 }
 
 /* --- Resizable Gutter Styles --- */
 .gutter { background-color: transparent; }
-.gutter.gutter-horizontal { cursor: col-resize; }
-.gutter.gutter-vertical { cursor: row-resize; }
+.gutter.gutter-horizontal { cursor: col-resize; width: 1rem; }
+.gutter.gutter-vertical { cursor: row-resize; height: 1rem; }
 
 /* --- Import Button --- */
 .input-div {
-  position: relative; 
-  width: 100%; 
-  max-width: 250px; 
-  height: 50px; 
-  border-radius: 10px;
-  border: 2px solid var(--import-glow-color); 
-  display: flex; 
-  justify-content: center;
-  align-items: center; 
-  overflow: hidden; 
-  margin-bottom: 1rem;
-  box-shadow: var(--import-glow-shadow); 
-  animation: flicker 2s linear infinite;
+    position: relative; width: 100%; max-width: 250px; height: 50px;
+    border-radius: 10px; border: 2px solid var(--import-glow-color);
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 1rem; box-shadow: var(--import-glow-shadow);
+    animation: flicker 2s linear infinite; flex-shrink: 0;
 }
 .input-div .icon {
-  color: var(--import-glow-color); font-size: 2rem;
-  cursor: pointer; animation: iconflicker 2s linear infinite;
+    color: var(--import-glow-color); font-size: 2rem;
+    cursor: pointer; animation: iconflicker 2s linear infinite;
 }
-.input {
-  position: absolute; 
-  opacity: 0; 
-  width: 100%;
-  height: 100%; 
-  cursor: pointer !important;
-}
+.input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer !important; }
 @keyframes flicker {
-  0%, 10%, 30%, 100% { border: 2px solid var(--import-glow-color); box-shadow: var(--import-glow-shadow); }
-  5%, 25% { border: none; box-shadow: none; }
+    0%, 10%, 30%, 100% { border: 2px solid var(--import-glow-color); box-shadow: var(--import-glow-shadow); }
+    5%, 25% { border: none; box-shadow: none; }
 }
 @keyframes iconflicker {
-  0%, 10%, 30%, 100% { opacity: 1; }
-  5%, 25% { opacity: 0.2; }
+    0%, 10%, 30%, 100% { opacity: 1; }
+    5%, 25% { opacity: 0.2; }
 }
 
 /* --- Visual File Tree Styles --- */
-/* CORRECTED: The diagram container is now responsible for scrolling. */
 #arch-diagram-container {
-    flex: 1;
-    min-width: 0;
-    min-height: 0;
-    width: 100%;
-    height: 100%;
-    padding: 2rem 0;
-    text-align: center;
-
-    /* Always show scrollbars */
-    overflow-x: scroll;
-    overflow-y: scroll;
-}
-
-
-.root-visual-tree { 
-    display: inline-block; /* Allows the tree to grow as wide as needed */
-    padding: 1rem;  /* Padding to prevent content touching the edges */
-    min-width: 100%;   /* 👈 keeps it wider than container if needed */
-    min-height: 100%;   /* 👈 keeps it taller than container if needed */
-    overflow-x: scroll;
-    overflow-y: scroll;
-}
-.children { display: flex; justify-content: center; position: relative; padding-top: 30px; }
-.visual-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 5px; 
-    position: relative;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.node-content-wrapper {
-    padding: 5px;
+    flex: 1 1 auto;
+    overflow: auto; /* Allow both vertical and horizontal scrolling */
+    background-color: rgba(0,0,0,0.1); /* Slightly inset background */
     border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 8px;
 }
-.visual-node.selected .node-content-wrapper {
-    outline: 2px solid var(--accent-color);
+.root-visual-tree { display: block; padding: 2rem; width: max-content; min-width: 100%; }
+.children { display: flex; justify-content: center; position: relative; padding-top: 30px; flex-wrap: nowrap; }
+.visual-node {
+    display: flex; flex-direction: column; align-items: center;
+    margin: 0 5px; position: relative; cursor: pointer; flex-shrink: 0;
 }
+.node-content-wrapper { padding: 5px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; }
+.visual-node.selected .node-content-wrapper { outline: 2px solid var(--accent-color); }
 .visual-node .icon {
-    width: 60px; height: 60px; background-size: contain;
-    background-repeat: no-repeat; background-position: center;
-    margin-bottom: 8px; transition: transform 0.2s ease;
+    width: 60px; height: 60px; background-size: contain; background-repeat: no-repeat;
+    background-position: center; margin-bottom: 8px; transition: transform 0.2s ease;
 }
 .visual-node:hover .icon { transform: scale(1.1); }
 .visual-node .name { font-size: 14px; white-space: nowrap; }
-
-/* --- Connecting Lines --- */
+/* Connecting Lines */
 .children::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background-color: var(--line-color); }
 .visual-node::before { content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); width: 2px; height: 15px; background-color: var(--line-color); }
-.root-visual-tree > .visual-node::before, .root-visual-tree > .visual-node::after { display: none; }
+.root-visual-tree > .visual-node::before { display: none; }
 .children::after { content: ''; position: absolute; top: 15px; left: 50%; transform: translateX(-50%); height: 2px; width: calc(100% - 70px); background-color: var(--line-color); }
-.children .visual-node:only-child::before { height: 30px; }
-.children .visual-node:only-child ~ .children::after { display: none; }
 
-/* --- Code, Flowchart, & Analysis Panel Styles --- */
-#code-panel h2, #flowchart-panel h2, #analysis-panel h2 { margin-top: 0; }
-#code-panel pre {
-    margin: 0;
-    height: calc(100% - 40px);
-}
-/* CORRECTED: Changed ** to * in the attribute selector */
+/* --- Code Panel --- */
+#code-panel { overflow: auto; padding: 0; /* Remove padding for code block */ }
+#code-panel h2 { padding: 1.25rem 1.25rem 0; margin-bottom: 0; }
+#code-panel pre, #code-panel code { height: 100%; font-family: 'Fira Code', 'Courier New', monospace; font-size: 14px; }
 #code-panel pre[class*="language-"] {
-    background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    background: none !important;
+    margin: 0;
+    padding: 1.25rem;
+    height: calc(100% - 40px); /* Adjust height to account for h2 */
+    overflow: auto !important;
 }
 
-/* --- Misc --- */
-.loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+/* --- CLEANED-UP ABOUT SECTION --- */
+#about-section {
+    margin: 1rem; /* Use same margin as main container for consistency */
+    padding: 2.5rem; /* More spacious padding */
+}
+.about-inner { max-width: 900px; margin: 0 auto; line-height: 1.6; }
+#about-section h2 { border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
+#about-section h3 {
+    margin: 2.5rem 0 1rem; font-size: 1rem; text-transform: uppercase;
+    letter-spacing: .8px; color: var(--accent-color);
+}
+.about-lead { font-size: 1rem; opacity: .85; margin: 0 0 1.5rem; }
+.about-list, .dev-list { list-style: none; padding-left: 0; margin: 1rem 0; font-size: .9rem; }
+.about-list li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+.about-list li::before {
+    content: '✓';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+.dev-list { display: flex; gap: 2rem; }
+.dev-list li { font-size: 1rem; }
+#about-section a { color: var(--accent-color); text-decoration: none; font-weight: 500; }
+#about-section a:hover { text-decoration: underline; }
+.about-note { font-size: .8rem; opacity: .75; margin-top: 2rem; font-style: italic; }
+.about-footer {
+    margin-top: 3rem; display: flex; justify-content: space-between;
+    font-size: .8rem; opacity: .6; border-top: 1px solid var(--border-color); padding-top: 1.5rem;
+}
+.about-footer a { text-decoration: none; }
 
-/* --- Custom Scrollbar for Dark Theme --- */
-::-webkit-scrollbar { width: 10px; height: 10px; }
+/* --- MISC --- */
+.loader { /* Centered Loader */
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px; height: 32px; border: 3px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%; animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: var(--panel-bg); }
-::-webkit-scrollbar-thumb {
-    background: #888; /* A lighter grey is more visible by default */
-    border-radius: 5px;
+::-webkit-scrollbar-thumb { background: #555; border-radius: 6px; border: 3px solid var(--panel-bg); }
+::-webkit-scrollbar-thumb:hover { background: #777; }
+
+/* --- ✅ SCROLLBAR CORNER FIX --- */
+/* This styles the small square where two scrollbars meet */
+::-webkit-scrollbar-corner {
+    background-color: var(--panel-bg);
 }
-::-webkit-scrollbar-thumb:hover {
-    background: #a0a0a0; /* Make hover color slightly lighter */
+
+/* --- ✅ PRISM.JS LIGHT THEME OVERRIDE --- */
+/* This entire block provides styles for code syntax ONLY when light-theme is active */
+body.light-theme code[class*="language-"],
+body.light-theme pre[class*="language-"] {
+	color: black;
+	background: none;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-size: 1em;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+body.light-theme .token.comment,
+body.light-theme .token.prolog,
+body.light-theme .token.doctype,
+body.light-theme .token.cdata {
+	color: slategray;
+}
+body.light-theme .token.punctuation {
+	color: #999;
+}
+body.light-theme .token.namespace {
+	opacity: .7;
+}
+body.light-theme .token.property,
+body.light-theme .token.tag,
+body.light-theme .token.boolean,
+body.light-theme .token.number,
+body.light-theme .token.constant,
+body.light-theme .token.symbol,
+body.light-theme .token.deleted {
+	color: #905;
+}
+body.light-theme .token.selector,
+body.light-theme .token.attr-name,
+body.light-theme .token.string,
+body.light-theme .token.char,
+body.light-theme .token.builtin,
+body.light-theme .token.inserted {
+	color: #690;
+}
+body.light-theme .token.operator,
+body.light-theme .token.entity,
+body.light-theme .token.url,
+body.light-theme .language-css .token.string,
+body.light-theme .style .token.string {
+	color: #9a6e3a;
+}
+body.light-theme .token.atrule,
+body.light-theme .token.attr-value,
+body.light-theme .token.keyword {
+	color: #07a;
+}
+body.light-theme .token.function,
+body.light-theme .token.class-name {
+	color: #DD4A68;
+}
+body.light-theme .token.regex,
+body.light-theme .token.important,
+body.light-theme .token.variable {
+	color: #e90;
+}
+body.light-theme .token.important,
+body.light-theme .token.bold {
+	font-weight: bold;
+}
+body.light-theme .token.italic {
+	font-style: italic;
+}
+body.light-theme .token.entity {
+	cursor: help;
+}
+
+/* Add this to your style.css */
+
+/* --- Flowchart Panel Fixes --- */
+#flowchart-panel {
+    /* Ensure the panel itself doesn't hide its children's overflow */
+    overflow: visible;
+}
+
+#flowchart-panel .mermaid-container {
+    flex-grow: 1; /* Allow the container to fill the panel */
+    overflow: auto; /* ✅ Add both vertical and horizontal scrollbars when needed */
+    display: flex; /* Helps with centering the content */
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.1);
 }

@@ -4,21 +4,23 @@
   "description": "Frontend for the AI Code Visualizer tool, providing a visual representation of project file structures and code breakdowns.",
   "main": "src/App.tsx",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "lsof -ti:5173 | xargs kill -9 2>/dev/null || true && vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "axios": "^0.21.1"
+    "axios": "^1.12.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-scripts": "^0.0.0"
   },
   "devDependencies": {
+    "@types/minimatch": "^6.0.0",
+    "@types/react": "^17.0.88",
+    "@types/react-dom": "^17.0.26",
+    "@vitejs/plugin-react": "^5.0.2",
     "typescript": "^4.1.2",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.2"
+    "vite": "^7.1.5"
   },
   "keywords": [
     "AI",
