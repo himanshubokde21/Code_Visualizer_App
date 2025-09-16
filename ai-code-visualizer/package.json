@@ -3,10 +3,7 @@
     "dev:backend": "nodemon --watch backend/src --exec ts-node backend/src/app.ts",
     "build:backend": "tsc -p backend",
     "start:backend": "node backend/dist/app.js",
-    "dev:frontend": "cd frontend && npm run dev",
-    "build:frontend": "cd frontend && npm run build",
-    "start:frontend": "cd frontend && npm run preview",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+    "dev": "npm run dev:backend"
   },
   "devDependencies": {
     "@types/minimatch": "^6.0.0",
@@ -16,7 +13,9 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
     "@types/react-dom": "^19.1.9",
+    "firebase": "^12.2.1",
     "react-dom": "^19.1.1"
   }
 }

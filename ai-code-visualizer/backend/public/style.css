@@ -53,6 +53,31 @@ header {
 }
 header h1 { margin: 0; font-size: 1.05rem; font-weight: 500; }
 
+/* Add this new block to your style.css */
+
+/* --- Brand Title Animation --- */
+.brand-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    /* Create a gradient using your theme's colors */
+    background: linear-gradient(90deg, var(--accent-color), var(--import-glow-color), var(--accent-color));
+    background-size: 200% auto;
+    
+    /* Apply the gradient as the text color */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    
+    /* Animate the gradient position */
+    animation: gradient-animation 8s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 #quick-nav {
     margin-left: auto;
 }
@@ -189,6 +214,7 @@ main#container {
 #about-section {
     margin: 1rem; /* Use same margin as main container for consistency */
     padding: 2.5rem; /* More spacious padding */
+    gap: 0.3rem;
 }
 .about-inner { max-width: 900px; margin: 0 auto; line-height: 1.6; }
 #about-section h2 { border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; }
@@ -342,4 +368,56 @@ body.light-theme .token.entity {
     padding: 1rem;
     border-radius: 8px;
     background-color: rgba(0,0,0,0.1);
+}
+
+/* --- Flowchart Panel Overflow Fix --- */
+#flowchart-panel .mermaid {
+    flex-grow: 1;         /* Allows the diagram container to fill available space */
+    overflow: auto;       /* Adds scrollbars when the diagram is too big */
+    display: flex;        /* Helps to center the diagram within the panel */
+    justify-content: center;
+    align-items: center;
+    min-height: 0;        /* Ensures proper resizing within a flex container */
+}
+
+/* --- AI Analysis Panel Formatting --- */
+.analysis-content {
+    flex-grow: 1;
+    overflow-y: auto; /* Add scrolling for long analyses */
+    padding-right: 10px; /* Space for the scrollbar */
+}
+
+.analysis-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.analysis-content p {
+    line-height: 1.6;
+    margin-top: 0;
+}
+
+.analysis-content ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.analysis-content li {
+    margin-bottom: 0.5rem;
+}
+
+.analysis-content code {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+body.light-theme .analysis-content code {
+    background-color: rgba(0, 0, 0, 0.05);
 }
