@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedTheme) applyTheme(savedTheme);
     else applyTheme(prefersDark ? 'dark' : 'light');
 
-    // --- Initialize Resizable Panels ---
+    if (window.innerWidth > 768) {
     Split(['#left-panel', '#right-wrapper'], { sizes: [35, 65], minSize: 300, gutterSize: 10 });
     Split(['#code-and-flowchart-panels', '#analysis-panel'], { direction: 'vertical', sizes: [60, 40], minSize: 150, gutterSize: 10 });
     Split(['#code-panel', '#flowchart-panel'], { sizes: [50, 50], minSize: 200, gutterSize: 10 });
-
+}
     // --- Event Listeners for Folder Import ---
     importFolderBtnWrapper.addEventListener('click', () => {
         folderUploadInput.click();

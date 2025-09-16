@@ -1,10 +1,12 @@
 {
   "scripts": {
-    "dev:backend": "nodemon --watch backend/src --exec ts-node backend/src/app.ts",
-    "build:backend": "tsc -p backend",
-    "start:backend": "node backend/dist/app.js",
-    "dev": "npm run dev:backend"
-  },
+  "dev:backend": "nodemon --watch backend/src --exec ts-node backend/src/app.ts",
+  "build:backend": "tsc -p backend",
+  "start:backend": "node backend/dist/app.js",
+  "dev": "concurrently \"npm run dev:backend\"",
+  "build": "npm run build:backend"
+},
+
   "devDependencies": {
     "@types/minimatch": "^6.0.0",
     "concurrently": "^8.2.2",

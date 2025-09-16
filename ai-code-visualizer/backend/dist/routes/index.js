@@ -1,5 +1,5 @@
 "use strict";
-// FILE: src/routes/index.ts
+// FILE: ai-code-visualizer/src/routes/index.ts
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -33,10 +33,33 @@ const storage = multer_1.default.diskStorage({
 });
 const upload = (0, multer_1.default)({ storage });
 // --- API Routes ---
+// ✅ NEW: Add this root route for a health check
+router.get('/', (req, res) => {
+    res.send('AI Code Visualizer API is running!');
+});
 router.get('/structure', fileController.getFileStructure);
-// NEW: This route handles the project upload
+router.get('/content', fileController.getFileContent);
+// Upload new project files
 router.post('/upload', (req, res, next) => {
     clearUploadsDirectory(); // Clear old project before uploading new one
     next();
 }, upload.array('projectFiles'), fileController.handleUpload);
+// --- New Analyze Route ---
+router.post('/analyze', (req, res) => {
+    const { code } = req.body;
+    if (!code) {
+        return res.status(400).json({ error: "No code provided" });
+    }
+    // Example breakdown logic (replace with your AI logic later)
+    const lines = code.split("\n").length;
+    const words = code.split(/\s+/).filter(Boolean).length;
+    res.json({
+        message: "Code breakdown successful ✅",
+        stats: {
+            lines,
+            words,
+        },
+        preview: code.substring(0, 100) + (code.length > 100 ? "..." : "")
+    });
+});
 exports.default = router;

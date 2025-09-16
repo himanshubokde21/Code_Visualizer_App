@@ -1,5 +1,5 @@
 "use strict";
-// FILE: src/services/geminiService.ts
+// FILE: ai-code-visualizer/src/services/geminiService.ts
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeminiService = void 0;
 const generative_ai_1 = require("@google/generative-ai");
